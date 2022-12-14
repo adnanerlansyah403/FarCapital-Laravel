@@ -22,6 +22,10 @@
         </tbody>
     </table>
 
+    <p id="loading">
+        
+    </p>
+
     @yield('content')
     
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
@@ -33,21 +37,27 @@
             dataType: "json",
             beforeSend: function () { 
                 let loader = true;
+                if(loader) {
+                    $("#loading").text('Loading...');
+                }
             },
             success: response => {
                 let listPengguna = response.data
                 let htmlString = ""
-                loading: false
+                loading = false
+                if(!loading) {
+                    $("#loading").text("");
+                }
                 for(let pengguna of listPengguna) {
                     htmlString += `
                         <tr>
                             <td>${pengguna.nama}</td>
                             <td>${pengguna.email}</td>
                             <td>
-                                <a href="http://localhost:8000/detail/${pengguna.id}" target="_blank">
+                                <a href="http://localhost:8000/detail/${pengguna.id}">
                                     Details
                                 </a>  
-                                <a onClick={deletePengguna(${pengguna.id})} target="_blank">
+                                <a onClick={deletePengguna(${pengguna.id})}>
                                     <button>Hapus</button>
                                 </a>    
                             </td>

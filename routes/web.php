@@ -40,6 +40,6 @@ Route::get("/add", function() {
 })->name('add');
 
 
-Route::get("/detail/{id}", function() {
-    return view('frontend.detail');
+Route::get("/detail/{id}", function($id) {
+    return view('frontend.detail', ['id' => $id]);
 })->name('detail');
