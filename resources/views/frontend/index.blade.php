@@ -31,10 +31,13 @@
             url: "http://127.0.0.1:8000/api/pengguna/list",
             type: "GET",
             dataType: "json",
+            beforeSend: function () { 
+                let loader = true;
+            },
             success: response => {
                 let listPengguna = response.data
-                console.log(listPengguna)
                 let htmlString = ""
+                loading: false
                 for(let pengguna of listPengguna) {
                     htmlString += `
                         <tr>
@@ -44,8 +47,8 @@
                                 <a href="http://localhost:8000/detail/${pengguna.id}" target="_blank">
                                     Details
                                 </a>  
-                                <a href="http://localhost:8000/delete/${pengguna.id}" target="_blank">
-                                    Hapus
+                                <a onClick={deletePengguna(${pengguna.id})} target="_blank">
+                                    <button>Hapus</button>
                                 </a>    
                             </td>
                         </tr>
@@ -54,6 +57,21 @@
                 $('#daftar-pengguna').append($.parseHTML(htmlString))
             }
         })
+
+        function deletePengguna(id) {
+            $.ajax({
+                url: `http://127.0.0.1:8000/api/pengguna/${id}/delete`,
+                type: "POST",
+                dataType: "json",
+                success: _ => {
+                    console.log("success!");
+                    window.location.reload();
+                },
+                error: err => {
+                    console.log(err);
+                }
+            })
+        }
     </script>
 
 </body>
