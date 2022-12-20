@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>API AJAX</title>
-</head>
-<body>
+@extends("frontend.master")
+
+@section("title", 'List Pengguna')
+
+@section("content_master")
+
+<a href="{{ route("index") }}">Kembali</a>
 
     <form id="form">
         <label for="nama">Nama</label>
@@ -33,10 +31,10 @@
                 return alert("Nama harus di isi");
             }
             if(email == "") {
-                return alert("Nama harus di isi");
+                return alert("Email harus di isi");
             }
             if(password == "") {
-                return alert("Nama harus di isi");
+                return alert("Password harus di isi");
             }
 
             let formData = new FormData();
@@ -65,5 +63,4 @@
     
     </script>
     
-</body>
-</html>
+@endsection

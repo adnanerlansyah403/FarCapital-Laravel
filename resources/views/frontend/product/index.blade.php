@@ -1,23 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
-</head>
-<body>
+@extends("frontend.master")
 
-    <a href="{{ route('add') }}">Tambah Pengguna</a>
+@section("title", "List Product")
+
+@section("content_master")
+
+    <a href="{{ route('products.create') }}">Tambah Product</a>
     <table border="1">
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Email</th>
+                <th>Harga</th>
+                <th>Deskripsi</th>
+                <th>Rating</th>
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody id="daftar-pengguna">
+        <tbody id="daftar-product">
             
         </tbody>
     </table>
@@ -26,13 +24,11 @@
         
     </p>
 
-    @yield('content')
-    
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
 
     <script type="text/javascript">
         $.ajax({
-            url: "http://127.0.0.1:8000/api/pengguna/list",
+            url: "http://127.0.0.1:8000/api/products/list",
             type: "GET",
             dataType: "json",
             beforeSend: function () { 
@@ -42,37 +38,40 @@
                 }
             },
             success: response => {
-                let listPengguna = response.data
+                let products = response.data
                 let htmlString = ""
                 loading = false
                 if(!loading) {
                     $("#loading").text("");
                 }
-                for(let pengguna of listPengguna) {
+                for(let product of products) {
                     htmlString += `
                         <tr>
-                            <td>${pengguna.nama}</td>
-                            <td>${pengguna.email}</td>
+                            <td>${product.nama}</td>
+                            <td>${product.harga}</td>
+                            <td>${product.deskripsi}</td>
+                            <td>${product.rating}</td>
                             <td>
-                                <a href="http://localhost:8000/detail/${pengguna.id}">
+                                <a href="http://localhost:8000/products/${product.id}/show">
                                     Details
                                 </a>  
-                                <a onClick={deletePengguna(${pengguna.id})}>
-                                    <button>Hapus</button>
+                                <a onClick={deleteProduct(${product.id})}>
+                                    <button>
+                                        Hapus
+                                    </button>
                                 </a>    
                             </td>
                         </tr>
                     `
                 }
-                $('#daftar-pengguna').append($.parseHTML(htmlString))
+                $('#daftar-product').append($.parseHTML(htmlString))
             }
         })
 
-        function deletePengguna(id) {
+        function deleteProduct(id) {
             $.ajax({
-                url: `http://127.0.0.1:8000/api/pengguna/${id}/delete`,
+                url: `http://127.0.0.1:8000/api/products/${id}/delete`,
                 type: "POST",
-                dataType: "json",
                 success: _ => {
                     console.log("success!");
                     window.location.reload();
@@ -83,6 +82,4 @@
             })
         }
     </script>
-
-</body>
-</html>
+@endsection
