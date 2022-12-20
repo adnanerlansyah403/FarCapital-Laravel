@@ -7,7 +7,7 @@
     <a href="{{ route("blogs.index") }}">Kembali</a>
      
     
-    <form id="form"><br>
+    <div id="form"><br>
         <label for="title">Title</label>
         <input type="text" id="title"><br>
         <label for="author">Author Name</label>
@@ -17,19 +17,24 @@
 
         <label for="image">Image</label>
         <input type="file" name="image" id="image"><br><br>
+
+        <label for="cover">Cover</label>
+        <input type="file" name="cover" id="cover"><br><br>
         
-        <button type="submit">Submit</button>
-    </form>
+        <button type="submit" id="submit">Submit</button>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
     
     <script type="text/javascript" defer>
 
-        function addPost() {
+        $("#submit").click(function () {
 
             let title = $("#title").val();
             let body = $("#body").val();
             let author = $("#author").val();
+            let image = $("#image").prop("files")[0];
+            let cover = $("#cover").prop("files")[0];
 
             if(title == "") {
                 return alert("Nama harus di isi");
@@ -45,7 +50,8 @@
             formData.append("title", title)
             formData.append("body", body)
             formData.append("author", author)
-            formData.append("image", image).prop("files")[0];
+            formData.append("image", image);
+            formData.append("cover", cover);
 
             $.ajax({
                 url: "http://127.0.0.1:8000/api/products/store",
@@ -54,14 +60,15 @@
                 processData: false,
                 contentType: false,
                 cache: false,
-                success: _ => {
+                success: response => {
                     window.location.href = "http://127.0.0.1:8000/products"
                 },
                 error: err => {
                     console.log(err);
                 }
             })
-        }
+        
+        })
 
         const form = document.getElementById('form');
         form.addEventListener("submit", addPost);

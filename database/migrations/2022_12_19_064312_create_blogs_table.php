@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string("author");
             $table->string("image")->nullable();
             $table->string("image_path")->nullable();
+            $table->string("cover_path")->nullable();
             $table->timestamps();
         });
     }

@@ -26,7 +26,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
 
-    <script type="text/javascript">
+    <script>
         $.ajax({
             url: "http://127.0.0.1:8000/api/products/list",
             type: "GET",

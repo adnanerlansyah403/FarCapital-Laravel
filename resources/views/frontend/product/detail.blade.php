@@ -5,9 +5,9 @@
 @section("content_master")
 
     <a href="{{ route("products.index") }}">Kembali</a>
-     
-    
-    <form id="form"><br>
+     <br><br>
+    <img id="photo">
+    <div id="form"><br>
         <label for="nama">Nama</label>
         <input type="text" id="nama"><br>
         <label for="harga">Harga</label>
@@ -19,14 +19,12 @@
         <label for="image">Image</label>
         <input type="file" name="image" id="image"><br><br>
 
-        <button type="submit">Submit</button>
-    </form>
+        <button type="submit" id="submit">Submit</button>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
     
-    <script type="text/javascript" defer>
-
-        const form = document.getElementById('form');
+    <script>
 
         $.ajax({
             url: "http://127.0.0.1:8000/api/products/{{ $id }}/show",
@@ -48,15 +46,30 @@
                 $("#harga").val(product.harga);
                 $("#rating").val(product.rating);
                 $("#deskripsi").val(product.deskripsi);
+                $("#photo").attr("src", "http://localhost:8000/" + product.image_path);
+            }
+        })
+
+        $("#image").change(function() {
+            if ($("#image").length > 0) {
+            console.log("Hello");
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#photo').attr('src', e.target.result);
+                }
+
+                
+                reader.readAsDataURL($('#image').files[0]);
             }
         })
     
-        function updateProduct(id) {
-
+        $("#submit").click(function (id) {
             let nama = $("#nama").val();
             let harga = $("#harga").val();
             let rating = $("#rating").val();
             let deskripsi = $("#deskripsi").val();
+            let image = $("#image").prop("files")[0];
             
             if(nama == "") {
                 return alert("Nama harus di isi");
@@ -84,15 +97,15 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: _ => {
+                success: response => {
+
                     window.location.href = "http://127.0.0.1:8000/products"
                 },
                 error: err => {
                     console.log(err);
                 }
             })
-        }
-        form.addEventListener("submit", updateProduct);
+        })
     
     </script>
     
